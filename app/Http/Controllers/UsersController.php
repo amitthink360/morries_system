@@ -19,7 +19,7 @@ class UsersController extends Controller
 	public function index(Request $request)
     {
 		if(Auth::check()) {
-			return Redirect::to('/dashboard');
+			return Redirect::to('admin/students');
 		}else{
 			return View('pages.user-pages.login');
 		}
@@ -62,7 +62,7 @@ class UsersController extends Controller
 		if(Auth::check() && $user->status == 0){
 			return View('setpassword');
 		}elseif(Auth::check()) {
-			return Redirect::to('/dashboard');
+			return Redirect::to('admin/students');
 		}
     }
 	
@@ -75,7 +75,7 @@ class UsersController extends Controller
 		$user->status = 1;
 		$user->save();
 		
-		return Redirect::to('/dashboard');
+		return Redirect::to('admin/students');
 	}
 	
 	public function doLogin(Request $request)
@@ -102,6 +102,6 @@ class UsersController extends Controller
 	public function logout()
 	{
 		Auth::logout();
-		return Redirect::to('/login');
+		return Redirect::to('/admin');
 	}
 }

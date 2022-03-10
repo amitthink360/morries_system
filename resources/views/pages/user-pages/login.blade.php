@@ -66,13 +66,13 @@
 			headers: {
 			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
-			url: "{{ url('/doLogin') }}",
+			url: "{{ url('admin/doLogin') }}",
 			type: 'POST',
 			data: formdata,
 			success: function(result) {
 										
 				if(result.success === 'true'){
-					location.href = "/dashboard";
+					location.href = "admin/dashboard";
 				}else{
 					$("#wait-main").css("display", "none");
 					

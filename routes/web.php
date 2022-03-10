@@ -11,11 +11,22 @@
 |
 */
 
+view()->composer('*', function($view) {
+	
+	$view->with(array(
+		'user' => \Auth::user()
+	));
+});
+
 Route::group(['prefix' => 'admin'], function(){
     Route::get('/', 'UsersController@index');
 	Route::post('/doLogin', 'UsersController@doLogin');
 	Route::get('/logout', 'UsersController@logout');
-	Route::get('/dashboard','DashboardController@index');
+	Route::get('/students','StudentController@index');
+	Route::post('/student/add','StudentController@addNew');
+	Route::post('/student/update','StudentController@updateStudent');
+	Route::get('/student/getstudentinfo/{id}','StudentController@getStudentInfo');
+	Route::get('/student/delete/{id}','StudentController@deleteStudent');
 });
 
 Route::group(['prefix' => 'basic-ui'], function(){
