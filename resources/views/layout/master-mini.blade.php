@@ -21,7 +21,7 @@
   <!-- end plugin css -->
 
   <!-- common css -->
-  {!! Html::style('public/css/app.css') !!}
+  {!! Html::style('css/app.css') !!}
   <!-- end common css -->
 
   @stack('style')
