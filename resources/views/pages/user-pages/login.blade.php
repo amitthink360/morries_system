@@ -72,7 +72,7 @@
 			success: function(result) {
 										
 				if(result.success === 'true'){
-					location.href = "admin/dashboard";
+					location.href = "admin/students";
 				}else{
 					$("#wait-main").css("display", "none");
 					
