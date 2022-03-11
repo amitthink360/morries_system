@@ -27,6 +27,11 @@ Route::group(['prefix' => 'admin'], function(){
 	Route::post('/student/update','StudentController@updateStudent');
 	Route::get('/student/getstudentinfo/{id}','StudentController@getStudentInfo');
 	Route::get('/student/delete/{id}','StudentController@deleteStudent');
+	Route::get('/exercise','ExerciseController@index');
+	Route::post('/exercise/add','ExerciseController@addNew');
+	Route::post('/exercise/update','ExerciseController@updateExercise');
+	Route::get('/exercise/getexerciseinfo/{id}','ExerciseController@getExerciseInfo');
+	Route::get('/exercise/delete/{id}','ExerciseController@deleteExercise');
 });
 
 Route::group(['prefix' => 'basic-ui'], function(){
@@ -113,11 +118,6 @@ Route::group(['prefix' => 'user-pages'], function(){
     Route::get('lock-screen', function () { return view('pages.user-pages.lock-screen'); });
 });
 
-Route::group(['prefix' => 'error-pages'], function(){
-    Route::get('error-404', function () { return view('pages.error-pages.error-404'); });
-    Route::get('error-500', function () { return view('pages.error-pages.error-500'); });
-});
-
 Route::group(['prefix' => 'general-pages'], function(){
     Route::get('blank-page', function () { return view('pages.general-pages.blank-page'); });
     Route::get('landing-page', function () { return view('pages.general-pages.landing-page'); });
@@ -146,8 +146,3 @@ Route::get('/clear-cache', function() {
     Artisan::call('cache:clear');
     return "Cache is cleared";
 });
-
-// 404 for undefined routes
-Route::any('/{page?}',function(){
-    return View::make('pages.error-pages.error-404');
-})->where('page','.*');
