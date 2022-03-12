@@ -31,7 +31,7 @@
 							<td>{{ $student->membership }}</td>
 							<td>{{ $student->last_login }}</td>
 							<td>{{ $student->created_at }}</td>
-							<td><a href="javascript:void(0);" class="btn btn-primary btn-fw editStudent" data-id="{{ $student->id }}">Edit</a>  <a href="{{ url('admin/student/delete') }}/{{ $student->id }}" class="btn btn-danger btn-fw" onclick="return confirm('Are you Sure?');">Delete</a></td>
+							<td><a href="javascript:void(0);" class="btn btn-primary btn-fw editStudent" data-id="{{ $student->id }}">Edit</a>  <a href="{{ url('/student/delete') }}/{{ $student->id }}" class="btn btn-danger btn-fw" onclick="return confirm('Are you Sure?');">Delete</a></td>
 						</tr>
 					@endforeach
 				@else
@@ -48,7 +48,7 @@
 </div>
 <div id="myModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
-		<form action="{{ url('admin/student/add') }}" method="post" id="register_form" enctype="multipart/form-data">
+		<form action="{{ url('/student/add') }}" method="post" id="register_form" enctype="multipart/form-data">
 		{!! csrf_field() !!}
 			<div class="modal-content">
 				<div class="modal-header">
@@ -93,7 +93,7 @@
 
 <div id="editModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
-		<form action="{{ url('admin/student/update') }}" method="post" id="edit_register_form" enctype="multipart/form-data">
+		<form action="{{ url('/student/update') }}" method="post" id="edit_register_form" enctype="multipart/form-data">
 		{!! csrf_field() !!}
 			<div class="modal-content">
 				<div class="modal-header">
@@ -146,7 +146,7 @@
 			headers: {
 			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
-			url: "{{ url('admin/student/add') }}",
+			url: "{{ url('/student/add') }}",
 			type: 'POST',
 			data: formdata,
 			success: function(result) {
@@ -172,7 +172,7 @@
 			headers: {
 			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
-			url: "{{ url('admin/student/update') }}",
+			url: "{{ url('/student/update') }}",
 			type: 'POST',
 			data: formdata,
 			success: function(result) {
@@ -200,7 +200,7 @@
 			headers: {
 			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
-			url: "{{ url('admin/student/getstudentinfo') }}/"+student_id,
+			url: "{{ url('/student/getstudentinfo') }}/"+student_id,
 			type: 'GET',
 			dataType: 'json',
 			success: function(result) {

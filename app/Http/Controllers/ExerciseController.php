@@ -16,41 +16,52 @@ class ExerciseController extends Controller
 {
 	public function index(Request $request)
     {		
-		if(Auth::check()) {
+		if(Auth::check() && Auth::user()->role == "admin") {
 			$exercises = Exercise::withCount('questions')->get();
 			return View('pages.exercise.lists', compact('exercises'));
+		}elseif(Auth::check() && Auth::user()->role == "student") {
+			$exercises = Exercise::withCount('questions')->get();
+			return View('pages.exercise.slists', compact('exercises'));
 		}else{
-			return Redirect::to('/admin');
+			return Redirect::to('/');
 		}
 	}
 	
 	public function showQuestions(Request $request, Exercise $exercise)
     {
-		$questiondata = array();
-		$equestions = $exercise->questions()->get();
-		$exercise_id = $exercise->id;
-		
-		foreach($equestions as $question){
-			$type = Types::where('id','=', $question->type_id)->first();
+		if(Auth::check() && Auth::user()->role == "admin") {
+			$questiondata = array();
+			$equestions = $exercise->questions()->get();
+			$exercise_id = $exercise->id;
 			
-			$questiondata[] = array(
-				'id' => $question->id,
-				'type' => $type->name,
-				'type_id' => $question->type_id,
-				'question' => $question->question,
-				'answer' => $question->answer,
-				'created_at' => $question->created_at
-			);
+			foreach($equestions as $question){
+				$type = Types::where('id','=', $question->type_id)->first();
+				
+				$questiondata[] = array(
+					'id' => $question->id,
+					'type' => $type->name,
+					'type_id' => $question->type_id,
+					'question' => strip_tags($question->question),
+					'answer' => $question->answer,
+					'created_at' => $question->created_at
+				);
+			}
+			
+			return View('pages.exercise.qlists', compact('questiondata','exercise_id'));
+		}else{
+			return Redirect::to('/');
 		}
-		
-		return View('pages.exercise.qlists', compact('questiondata','exercise_id'));
     }
 	
 	public function deleteExercise(Request $request,$id)
     {
-		Exercise::where('id', '=', $id)->delete();
-		
-		return redirect('/admin/exercise');
+		if(Auth::check() && Auth::user()->role == "admin") {
+			Exercise::where('id', '=', $id)->delete();
+			
+			return redirect('/exercise');
+		}else{
+			return Redirect::to('/');
+		}
 	}
 	
 	public function addNew(Request $request)
@@ -134,7 +145,7 @@ class ExerciseController extends Controller
 		$question->created_at = Carbon::now();
 		$question->save();		
 			
-		return Redirect::to('/admin/exercise/view/'.$exercise_id);
+		return Redirect::to('/exercise/view/'.$exercise_id);
 	}
 	
 	public function getQuestionInfo($id)
@@ -184,13 +195,17 @@ class ExerciseController extends Controller
 		$question->updated_at = Carbon::now();
 		$question->save();		
 			
-		return Redirect::to('/admin/exercise/view/'.$exercise_id);
+		return Redirect::to('/exercise/view/'.$exercise_id);
 	}	
 	
 	public function deleteQuestion(Request $request,$exercise_id,$id)
     {
-		Questions::where('id', '=', $id)->delete();
-		
-		return Redirect::to('/admin/exercise/view/'.$exercise_id);
+		if(Auth::check() && Auth::user()->role == "admin") {
+			Questions::where('id', '=', $id)->delete();
+			
+			return Redirect::to('/exercise/view/'.$exercise_id);
+		}else{
+			return Redirect::to('/');
+		}
 	}	
 }	

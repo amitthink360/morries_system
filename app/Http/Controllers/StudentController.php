@@ -13,19 +13,23 @@ class StudentController extends Controller
 {
 	public function index(Request $request)
     {		
-		if(Auth::check()) {
+		if(Auth::check() && Auth::user()->role == "admin") {
 			$students = User::where('role', '=', 'student')->get();
 			return View('pages.student.lists', compact('students'));
 		}else{
-			return Redirect::to('/admin');
+			return Redirect::to('/');
 		}
 	}
 	
 	public function deleteStudent(Request $request,$id)
     {
-		User::where('id', '=', $id)->delete();
-		
-		return redirect('/admin/students');
+		if(Auth::check() && Auth::user()->role == "admin") {
+			User::where('id', '=', $id)->delete();
+			
+			return redirect('/students');
+		}else{
+			return Redirect::to('/');
+		}
 	}
 	
 	public function addNew(Request $request)

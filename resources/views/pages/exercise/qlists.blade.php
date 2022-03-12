@@ -27,7 +27,7 @@
 							<td>{{ $question['type'] }}</td>
 							<td>@if($question['type_id'] == 2) {{ $question['answer'] }} @else {{ $question['question'] }} @endif</td>
 							<td>{{ $question['created_at'] }}</td>
-							<td><a href="javascript:void(0);" class="btn btn-primary btn-fw editQuestion" data-id="{{ $question['id'] }}">Edit</a>  <a href="{{ url('admin/question/delete') }}/{{ $exercise_id }}/{{ $question['id'] }}" class="btn btn-danger btn-fw" onclick="return confirm('Are you Sure?');">Delete</a></td>
+							<td><a href="javascript:void(0);" class="btn btn-primary btn-fw editQuestion" data-id="{{ $question['id'] }}">Edit</a>  <a href="{{ url('/question/delete') }}/{{ $exercise_id }}/{{ $question['id'] }}" class="btn btn-danger btn-fw" onclick="return confirm('Are you Sure?');">Delete</a></td>
 						</tr>
 					@endforeach
 				@else
@@ -44,7 +44,7 @@
 </div>
 <div id="myModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
-		<form action="{{ url('admin/question/add') }}" method="post" id="question_form" enctype="multipart/form-data">
+		<form action="{{ url('/question/add') }}" method="post" id="question_form" enctype="multipart/form-data">
 		{!! csrf_field() !!}
 			<div class="modal-content">
 				<div class="modal-header">
@@ -70,7 +70,7 @@
 						</div>
 						<div class="form-group type_r">
 							<div class="input-group">
-								<input type="text" name="question" class="form-control" placeholder="Question...">
+								<textarea class="form-control" id="ckeditor1" name="question"></textarea>
 							</div>
 						</div>
 						<div class="form-group type_2">
@@ -91,7 +91,7 @@
 
 <div id="editModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
-		<form action="{{ url('admin/question/update') }}" method="post" id="edit_question_form" enctype="multipart/form-data">
+		<form action="{{ url('/question/update') }}" method="post" id="edit_question_form" enctype="multipart/form-data">
 		{!! csrf_field() !!}
 			<div class="modal-content">
 				<div class="modal-header">
@@ -119,7 +119,7 @@
 							</div>
 							<div class="form-group type_r">
 								<div class="input-group">
-									<input type="text" name="question" class="form-control" placeholder="Question...">
+									<textarea class="form-control" id="ckeditor2" name="question"></textarea>
 								</div>
 							</div>
 							<div class="form-group type_2">
@@ -168,13 +168,14 @@
 			headers: {
 			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
-			url: "{{ url('admin/question/getquestioninfo') }}/"+question_id,
+			url: "{{ url('/question/getquestioninfo') }}/"+question_id,
 			type: 'GET',
 			dataType: 'json',
 			success: function(result) {
 			
 				$("#edit_question_form select[name='question_type']").val(result['type_id']);
-				$("#edit_question_form input[name='question']").val(result['question']);
+				//$("#ckeditor2").html(result['question']);
+				CKEDITOR.instances["ckeditor2"].setData(result['question']);
 				$("#edit_question_form input[name='answer']").val(result['answer']);
 				
 				if(result['type_id'] == 2){

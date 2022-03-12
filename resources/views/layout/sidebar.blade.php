@@ -1,13 +1,13 @@
 <nav class="sidebar sidebar-offcanvas dynamic-active-class-disabled" id="sidebar">
   <ul class="nav">
-    <li class="nav-item {{ active_class(['admin/students']) }}">
-      <a class="nav-link" href="{{ url('admin/students') }}">
+    <li class="nav-item {{ active_class(['/students']) }}">
+      <a class="nav-link" href="{{ url('/students') }}">
         <i class="menu-icon mdi mdi-account-multiple"></i>
         <span class="menu-title">Students</span>
       </a>
     </li>
-    <li class="nav-item {{ active_class(['admin/exercise']) }}">
-      <a class="nav-link" href="{{ url('admin/exercise') }}">
+    <li class="nav-item {{ active_class(['/exercise']) }}">
+      <a class="nav-link" href="{{ url('/exercise') }}">
         <i class="menu-icon mdi mdi-alphabetical"></i>
         <span class="menu-title">Exercise</span>
       </a>

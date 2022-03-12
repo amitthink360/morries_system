@@ -27,7 +27,7 @@
 							<td>{{ $exercise->name }}</td>
 							<td>{{ $exercise->questions_count }}</td>
 							<td>{{ $exercise->created_at }}</td>
-							<td><a href="javascript:void(0);" class="btn btn-primary btn-fw editExercise" data-id="{{ $exercise->id }}">Edit</a>  <a href="{{ url('admin/exercise/view') }}/{{ $exercise->id }}" class="btn btn-info btn-fw">View Questions</a>  <a href="{{ url('admin/exercise/delete') }}/{{ $exercise->id }}" class="btn btn-danger btn-fw" onclick="return confirm('Are you Sure?');">Delete</a></td>
+							<td><a href="javascript:void(0);" class="btn btn-primary btn-fw editExercise" data-id="{{ $exercise->id }}">Edit</a>  <a href="{{ url('/exercise/view') }}/{{ $exercise->id }}" class="btn btn-info btn-fw">View Questions</a>  <a href="{{ url('/exercise/delete') }}/{{ $exercise->id }}" class="btn btn-danger btn-fw" onclick="return confirm('Are you Sure?');">Delete</a></td>
 						</tr>
 					@endforeach
 				@else
@@ -44,7 +44,7 @@
 </div>
 <div id="myModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
-		<form action="{{ url('admin/exercise/add') }}" method="post" id="exercise_form" enctype="multipart/form-data">
+		<form action="{{ url('/exercise/add') }}" method="post" id="exercise_form" enctype="multipart/form-data">
 		{!! csrf_field() !!}
 			<div class="modal-content">
 				<div class="modal-header">
@@ -71,7 +71,7 @@
 
 <div id="editModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
-		<form action="{{ url('admin/exercise/update') }}" method="post" id="edit_exercise_form" enctype="multipart/form-data">
+		<form action="{{ url('/exercise/update') }}" method="post" id="edit_exercise_form" enctype="multipart/form-data">
 		{!! csrf_field() !!}
 			<div class="modal-content">
 				<div class="modal-header">
@@ -106,7 +106,7 @@
 			headers: {
 			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
-			url: "{{ url('admin/exercise/add') }}",
+			url: "{{ url('/exercise/add') }}",
 			type: 'POST',
 			data: formdata,
 			success: function(result) {
@@ -132,7 +132,7 @@
 			headers: {
 			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
-			url: "{{ url('admin/exercise/update') }}",
+			url: "{{ url('/exercise/update') }}",
 			type: 'POST',
 			data: formdata,
 			success: function(result) {
@@ -160,7 +160,7 @@
 			headers: {
 			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
-			url: "{{ url('admin/exercise/getexerciseinfo') }}/"+exercise_id,
+			url: "{{ url('/exercise/getexerciseinfo') }}/"+exercise_id,
 			type: 'GET',
 			dataType: 'json',
 			success: function(result) {

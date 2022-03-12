@@ -29,7 +29,7 @@
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
           <a class="dropdown-item mt-2"> Manage Accounts </a>
           <a class="dropdown-item"> Change Password </a>
-          <a class="dropdown-item" href="{{ url('/admin/logout') }}"> Sign Out </a>
+          <a class="dropdown-item" href="{{ url('/logout') }}"> Sign Out </a>
         </div>
       </li>
     </ul>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Mikel Morris Admin</title>
+  <title>Mikel Morris</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +32,11 @@
   <div class="container-scroller" id="app">
     @include('layout.header')
     <div class="container-fluid page-body-wrapper">
-      @include('layout.sidebar')
+		@if(Auth::check() && Auth::user()->role == "admin")
+		  @include('layout.sidebar')
+		@else
+		  @include('layout.sidebarstudent')
+		@endif
       <div class="main-panel">
         <div class="content-wrapper">
           @yield('content')
@@ -58,6 +62,7 @@
   {!! Html::script('assets/js/misc.js') !!}
   {!! Html::script('assets/js/settings.js') !!}
   {!! Html::script('assets/js/todolist.js') !!}
+  {!! Html::script('https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js') !!}
   <!-- end common js -->
 
   @stack('custom-scripts')
@@ -65,6 +70,15 @@
   <script>
 	$(document).ready( function () {
 		$('#myTable').DataTable();
+		CKEDITOR.replace( 'ckeditor1', {
+			filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+			filebrowserUploadMethod: 'form'
+		});
+		
+		CKEDITOR.replace( 'ckeditor2', {
+			filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+			filebrowserUploadMethod: 'form'
+		});
 	});
   </script>
 </body>

@@ -18,7 +18,9 @@ view()->composer('*', function($view) {
 	));
 });
 
-Route::group(['prefix' => 'admin'], function(){
+Route::post('ckeditor/image_upload', 'CKEditorController@upload')->name('upload');
+
+Route::group(['prefix' => '/'], function(){
     Route::get('/', 'UsersController@index');
 	Route::post('/doLogin', 'UsersController@doLogin');
 	Route::get('/logout', 'UsersController@logout');
@@ -38,6 +40,7 @@ Route::group(['prefix' => 'admin'], function(){
 	Route::post('/question/update','ExerciseController@updateQuestion');
 	Route::get('/question/getquestioninfo/{id}','ExerciseController@getQuestionInfo');
 	Route::get('/question/delete/{exercise}/{id}','ExerciseController@deleteQuestion');
+	Route::get('/contactus','UsersController@contactUs');
 });
 
 Route::group(['prefix' => 'basic-ui'], function(){
