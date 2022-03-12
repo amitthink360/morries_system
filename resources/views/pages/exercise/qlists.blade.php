@@ -8,29 +8,31 @@
   <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
-		<h4 class="card-title">Exercise Sets</h4>
+		<h4 class="card-title">Questions</h4>
 		<a href="javascript:void(0);" class="btn btn-success btn-fw" style="float: right;" data-toggle="modal" data-target="#myModal">Add New</a>
         <div class="table-responsive">
           <table class="table table-striped" id="myTable">
             <thead>
               <tr>
-                <th> Name </th>
-				<th> Date Added </th>
+                <th> Type </th>
+                <th> Question </th>
+                <th> Created At </th>
 				<th> Action </th>
               </tr>
             </thead>
             <tbody>
-				@if(!empty($exercises))
-					@foreach($exercises as $exercise)
+				@if(!empty($questiondata))
+					@foreach($questiondata as $question)
 						<tr>
-							<td>{{ $exercise->name }}</td>
-							<td>{{ $exercise->created_at }}</td>
-							<td><a href="javascript:void(0);" class="btn btn-primary btn-fw editExercise" data-id="{{ $exercise->id }}">Edit</a>  <a href="{{ url('admin/exercise/view') }}/{{ $exercise->id }}" class="btn btn-info btn-fw">View Questions</a>  <a href="{{ url('admin/exercise/delete') }}/{{ $exercise->id }}" class="btn btn-danger btn-fw" onclick="return confirm('Are you Sure?');">Delete</a></td>
+							<td>{{ $question['type'] }}</td>
+							<td>@if($question['type_id'] == 2) {{ $question['answer'] }} @else {{ $question['question'] }} @endif</td>
+							<td>{{ $question['created_at'] }}</td>
+							<td><a href="javascript:void(0);" class="btn btn-primary btn-fw editQuestion" data-id="{{ $question['id'] }}">Edit</a>  <a href="{{ url('admin/question/delete') }}/{{ $exercise_id }}/{{ $question['id'] }}" class="btn btn-danger btn-fw" onclick="return confirm('Are you Sure?');">Delete</a></td>
 						</tr>
 					@endforeach
 				@else
 					<tr>                            
-						<td colspan="5" align="center">No Exercise Found.</td>
+						<td colspan="5" align="center">No Question Found.</td>
 					</tr>
 				@endif 
             </tbody>
@@ -42,7 +44,7 @@
 </div>
 <div id="myModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
-		<form action="{{ url('admin/exercise/add') }}" method="post" id="exercise_form" enctype="multipart/form-data">
+		<form action="{{ url('admin/question/add') }}" method="post" id="question_form" enctype="multipart/form-data">
 		{!! csrf_field() !!}
 			<div class="modal-content">
 				<div class="modal-header">
@@ -50,17 +52,37 @@
 					<h4 class="modal-title">Add New</h4>
 				</div>
 				<div class="modal-body">
-					<div style="text-align: center;margin-bottom: 10px;"><span class="error_register" style="color: #eb4d4b;display:none;"></span></div>	
 					<div class="form-horizontal form-label-left">
 						<div class="form-group">
 							<div class="input-group">
-								<input type="text" name="set_name" class="form-control" placeholder="Name" required>
+								<select class="form-control" name="question_type" onchange="getval(this);">
+									<option value="">Question Type</option>
+									@foreach (App\Types::all() as $type)
+										<option value="{{ $type->id }}">{{ $type->name }}</option>
+									@endforeach	
+								</select>			
+							</div>
+						</div>
+						<div class="form-group type_3" style="display:none;">
+							<div class="input-group">
+								<input type="file" name="mp3_file" />
+							</div>
+						</div>
+						<div class="form-group type_r">
+							<div class="input-group">
+								<input type="text" name="question" class="form-control" placeholder="Question...">
+							</div>
+						</div>
+						<div class="form-group type_2">
+							<div class="input-group">
+								<input type="text" name="answer" class="form-control" placeholder="Answer...">
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<a href="javascript:void(0);" name="addcontacts" onclick="addExercise();" class="btn btn-primary btn-fw">Submit</a>
+					<input name="exercise_id" type="hidden" value="{{ $exercise_id }}" />
+					<button type="submit" name="addcontacts" class="btn btn-primary btn-fw">Submit</button>
 				</div>
 			</div>
 		</form>
@@ -69,7 +91,7 @@
 
 <div id="editModal" class="modal fade" role="dialog">
 	<div class="modal-dialog">
-		<form action="{{ url('admin/exercise/update') }}" method="post" id="edit_exercise_form" enctype="multipart/form-data">
+		<form action="{{ url('admin/question/update') }}" method="post" id="edit_question_form" enctype="multipart/form-data">
 		{!! csrf_field() !!}
 			<div class="modal-content">
 				<div class="modal-header">
@@ -79,91 +101,93 @@
 				<div class="modal-body">
 					<div style="text-align: center;margin-bottom: 10px;"><span class="error_edit" style="color: #eb4d4b;display:none;"></span></div>
 					<div class="form-horizontal form-label-left">
-						<div class="form-group">
-							<div class="input-group">
-								<input type="text" name="set_name" class="form-control" placeholder="Name" required>
+						<div class="form-horizontal form-label-left">
+							<div class="form-group">
+								<div class="input-group">
+									<select class="form-control" name="question_type" onchange="getval(this);">
+										<option value="">Question Type</option>
+										@foreach (App\Types::all() as $type)
+											<option value="{{ $type->id }}">{{ $type->name }}</option>
+										@endforeach	
+									</select>			
+								</div>
+							</div>
+							<div class="form-group type_3" style="display:none;">
+								<div class="input-group">
+									<input type="file" name="mp3_file" />
+								</div>
+							</div>
+							<div class="form-group type_r">
+								<div class="input-group">
+									<input type="text" name="question" class="form-control" placeholder="Question...">
+								</div>
+							</div>
+							<div class="form-group type_2">
+								<div class="input-group">
+									<input type="text" name="answer" class="form-control" placeholder="Answer...">
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<input name="exercise_id" type="hidden" value="" />
-					<a href="javascript:void(0);" name="addcontacts" onclick="editExercise();" class="btn btn-primary btn-fw">Submit</a>
+					<input name="exercise_id" type="hidden" value="{{ $exercise_id }}" />
+					<input name="question_id" type="hidden" value="" />
+					<button type="submit" name="addcontacts" class="btn btn-primary btn-fw">Submit</button>
 				</div>
 			</div>
 		</form>
 	</div>
 </div>
 <script>
-	function addExercise() {
-		$("#wait-main").css("display", "block");
-		
-		formdata = $("#exercise_form").serialize();
-		
-		$.ajax({
-			headers: {
-			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-			},
-			url: "{{ url('admin/exercise/add') }}",
-			type: 'POST',
-			data: formdata,
-			success: function(result) {
-										
-				if(result.success === 'true'){
-					location.reload();
-				}else{
-					$("#wait-main").css("display", "none");
-					
-					$(".error_register").text(result.error);
-					$(".error_register").show();
-				}
-			}
-		});
+	function getval(sel)
+	{
+		type = sel.value;
+		if(type == 2){
+			$(".type_3").hide();
+			$(".type_r").hide();
+		}else if(type == 3){
+			$(".type_r").show();
+			$(".type_3").show();
+			$(".type_2").show();
+		}else{
+			$(".type_3").hide();
+			$(".type_r").show();
+			$(".type_2").show();
+		}
 	}
 	
-	function editExercise() {
-		$("#wait-main").css("display", "block");
-		
-		formdata = $("#edit_exercise_form").serialize();
-		
-		$.ajax({
-			headers: {
-			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-			},
-			url: "{{ url('admin/exercise/update') }}",
-			type: 'POST',
-			data: formdata,
-			success: function(result) {
-										
-				if(result.success === 'true'){
-					location.reload();
-				}else{
-					$("#wait-main").css("display", "none");
-					
-					$(".error_edit").text(result.error);
-					$(".error_edit").show();
-				}
-			}
-		});
-	}
-	
-	$("body").on("click", ".editExercise", function(e) {
+	$("body").on("click", ".editQuestion", function(e) {
 		$("#wait-main").css("display", "block");		
-		$('#edit_exercise_form').trigger("reset");
-		exercise_id = $(this).attr('data-id');
+		$('#edit_question_form').trigger("reset");
+		question_id = $(this).attr('data-id');
 		
-		$("#edit_exercise_form input[name='exercise_id']").val(exercise_id);
+		$("#edit_question_form input[name='question_id']").val(question_id);
 		
 		$.ajax({
 			headers: {
-			  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
-			url: "{{ url('admin/exercise/getexerciseinfo') }}/"+exercise_id,
+			url: "{{ url('admin/question/getquestioninfo') }}/"+question_id,
 			type: 'GET',
 			dataType: 'json',
 			success: function(result) {
 			
-				$("#edit_exercise_form input[name='set_name']").val(result['name']);
+				if(result['type_id'] == 2){
+					$(".type_3").hide();
+					$(".type_r").hide();
+				}else if(result['type_id'] == 3){
+					$(".type_3").show();
+					$(".type_2").show();
+				}else{
+					$(".type_3").hide();
+					$(".type_2").show();
+				}
+			
+				$("#edit_question_form select[name='question_type']").val(result['type_id']);
+				$("#edit_question_form input[name='mp3_file']").val(result['mp3_file']);
+				$("#edit_question_form input[name='question']").val(result['question']);
+				$("#edit_question_form input[name='answer']").val(result['answer']);
 				$("#wait-main").css("display", "none");
 				$('#editModal').modal('show'); 
 			}

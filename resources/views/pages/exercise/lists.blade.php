@@ -15,6 +15,7 @@
             <thead>
               <tr>
                 <th> Name </th>
+                <th> Total Questions </th>
 				<th> Date Added </th>
 				<th> Action </th>
               </tr>
@@ -24,6 +25,7 @@
 					@foreach($exercises as $exercise)
 						<tr>
 							<td>{{ $exercise->name }}</td>
+							<td>{{ $exercise->questions_count }}</td>
 							<td>{{ $exercise->created_at }}</td>
 							<td><a href="javascript:void(0);" class="btn btn-primary btn-fw editExercise" data-id="{{ $exercise->id }}">Edit</a>  <a href="{{ url('admin/exercise/view') }}/{{ $exercise->id }}" class="btn btn-info btn-fw">View Questions</a>  <a href="{{ url('admin/exercise/delete') }}/{{ $exercise->id }}" class="btn btn-danger btn-fw" onclick="return confirm('Are you Sure?');">Delete</a></td>
 						</tr>
@@ -156,7 +158,7 @@
 		
 		$.ajax({
 			headers: {
-			  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
 			url: "{{ url('admin/exercise/getexerciseinfo') }}/"+exercise_id,
 			type: 'GET',

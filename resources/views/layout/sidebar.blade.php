@@ -1,17 +1,5 @@
 <nav class="sidebar sidebar-offcanvas dynamic-active-class-disabled" id="sidebar">
   <ul class="nav">
-    <li class="nav-item nav-profile not-navigation-link">
-      <div class="nav-link">
-        <div class="user-wrapper">
-          <div class="profile-image">
-            <i class="menu-icon mdi mdi-account-circle"></i>
-          </div>
-          <div class="text-wrapper">
-            <p class="profile-name">{{ $user->name }}</p>
-          </div>
-        </div>
-      </div>
-    </li>
     <li class="nav-item {{ active_class(['admin/students']) }}">
       <a class="nav-link" href="{{ url('admin/students') }}">
         <i class="menu-icon mdi mdi-account-multiple"></i>

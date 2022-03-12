@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAddNameInQuestionTypesTable extends Migration
+class AddNameQuestionTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateAddNameInQuestionTypesTable extends Migration
      */
     public function up()
     {
-        Schema::table('question_types', function (Blueprint $table) {
+		Schema::table('question_types', function (Blueprint $table) {
 			$table->string('name');
 		});
     }
@@ -25,6 +25,6 @@ class CreateAddNameInQuestionTypesTable extends Migration
      */
     public function down()
     {
-        
+        //
     }
 }

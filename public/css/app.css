@@ -17883,9 +17883,9 @@ small {
 }
 
 .navbar .navbar-brand-wrapper .navbar-brand img {
-  width: calc(255px - 130px);
+  /* width: calc(255px - 130px); */
   max-width: 100%;
-  height: 28px;
+  height: 60px;
   margin: auto;
   vertical-align: middle;
 }
@@ -17895,7 +17895,7 @@ small {
 }
 
 .navbar .navbar-brand-wrapper .brand-logo-mini img {
-  width: calc(70px - 50px);
+  /* width: calc(70px - 50px); */
   max-width: 100%;
   height: 28px;
   margin: auto;
@@ -18629,6 +18629,7 @@ small {
   -webkit-transition: width 0.25s ease, background 0.25s ease;
   -moz-transition: width 0.25s ease, background 0.25s ease;
   -ms-transition: width 0.25s ease, background 0.25s ease;
+  margin-top: 23px
 }
 
 .sidebar .sidebar-brand-wrapper {
@@ -18719,7 +18720,7 @@ small {
   margin-right: 1.25rem;
   width: 16px;
   line-height: 1;
-  font-size: 18px;
+  font-size: 24px;
   color: #979696;
 }
 
@@ -18731,7 +18732,7 @@ small {
 .sidebar .nav .nav-item .nav-link .menu-title {
   color: inherit;
   display: inline-block;
-  font-size: 12px;
+  font-size: 15px;
   line-height: 1;
   vertical-align: middle;
   cursor: pointer;
@@ -18982,7 +18983,7 @@ small {
 /* Layouts */
 
 .navbar.fixed-top + .page-body-wrapper {
-  padding-top: 39px;
+  padding-top: 63px;
 }
 
 @media (min-width: 992px) {

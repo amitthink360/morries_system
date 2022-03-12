@@ -198,7 +198,7 @@
 		
 		$.ajax({
 			headers: {
-			  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
 			url: "{{ url('admin/student/getstudentinfo') }}/"+student_id,
 			type: 'GET',

@@ -15,7 +15,7 @@ class CreateExerciseQuestionsTable extends Migration
     {
         Schema::create('exercise_questions', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('exercise_set_id'); 
+			$table->integer('exercise_id'); 
 			$table->integer('type_id'); 
 			$table->longText('mp3_file')->nullable();
 			$table->longText('question');

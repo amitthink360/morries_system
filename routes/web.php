@@ -31,7 +31,13 @@ Route::group(['prefix' => 'admin'], function(){
 	Route::post('/exercise/add','ExerciseController@addNew');
 	Route::post('/exercise/update','ExerciseController@updateExercise');
 	Route::get('/exercise/getexerciseinfo/{id}','ExerciseController@getExerciseInfo');
+	Route::get('/exercise/view/{exercise}','ExerciseController@showQuestions');
 	Route::get('/exercise/delete/{id}','ExerciseController@deleteExercise');
+	
+	Route::post('/question/add','ExerciseController@addNewQuestion');
+	Route::post('/question/update','ExerciseController@updateQuestion');
+	Route::get('/question/getquestioninfo/{id}','ExerciseController@getQuestionInfo');
+	Route::get('/question/delete/{exercise}/{id}','ExerciseController@deleteQuestion');
 });
 
 Route::group(['prefix' => 'basic-ui'], function(){
