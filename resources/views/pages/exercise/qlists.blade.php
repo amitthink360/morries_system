@@ -173,21 +173,23 @@
 			dataType: 'json',
 			success: function(result) {
 			
+				$("#edit_question_form select[name='question_type']").val(result['type_id']);
+				$("#edit_question_form input[name='question']").val(result['question']);
+				$("#edit_question_form input[name='answer']").val(result['answer']);
+				
 				if(result['type_id'] == 2){
 					$(".type_3").hide();
 					$(".type_r").hide();
 				}else if(result['type_id'] == 3){
+					$(".type_r").show();
 					$(".type_3").show();
 					$(".type_2").show();
 				}else{
 					$(".type_3").hide();
+					$(".type_r").show();
 					$(".type_2").show();
 				}
-			
-				$("#edit_question_form select[name='question_type']").val(result['type_id']);
-				$("#edit_question_form input[name='mp3_file']").val(result['mp3_file']);
-				$("#edit_question_form input[name='question']").val(result['question']);
-				$("#edit_question_form input[name='answer']").val(result['answer']);
+				
 				$("#wait-main").css("display", "none");
 				$('#editModal').modal('show'); 
 			}
