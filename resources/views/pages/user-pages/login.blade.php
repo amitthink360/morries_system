@@ -72,9 +72,9 @@
 			success: function(result) {
 										
 				if(result.success === 'true' && result.role === 'admin'){
-					location.href = "/students";
+					location.href = "students";
 				}else if(result.success === 'true' && result.role === 'student'){
-					location.href = "/exercise";
+					location.href = "exercise";
 				}else{
 					$("#wait-main").css("display", "none");
 					
