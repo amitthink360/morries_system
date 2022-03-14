@@ -40,6 +40,8 @@ Route::group(['prefix' => '/'], function(){
 	Route::post('/question/update','ExerciseController@updateQuestion');
 	Route::get('/question/getquestioninfo/{id}','ExerciseController@getQuestionInfo');
 	Route::get('/question/delete/{exercise}/{id}','ExerciseController@deleteQuestion');
+	Route::get('/startexercise','ExerciseController@startExercise');
+	Route::get('/progress','ExerciseController@Progress');
 	Route::get('/contactus','UsersController@contactUs');
 });
 

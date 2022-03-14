@@ -16,7 +16,6 @@
   {!! Html::style('assets/plugins/perfect-scrollbar/perfect-scrollbar.css') !!}
   <!-- end plugin css -->
 
-  @stack('plugin-styles')
 
   <!-- common css -->
   {!! Html::style('css/app.css') !!}
@@ -51,9 +50,6 @@
   {!! Html::script('assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js') !!}
   <!-- end base js -->
 
-  <!-- plugin js -->
-  @stack('plugin-scripts')
-  <!-- end plugin js -->
 
   <!-- common js -->
   {!! Html::script('https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js') !!}
@@ -65,21 +61,21 @@
   {!! Html::script('https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js') !!}
   <!-- end common js -->
 
-  @stack('custom-scripts')
-  
-  <script>
-	$(document).ready( function () {
-		$('#myTable').DataTable();
-		CKEDITOR.replace( 'ckeditor1', {
-			filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-			filebrowserUploadMethod: 'form'
+  @if($user->role == "admin")
+	  <script>
+		$(document).ready( function () {
+			$('#myTable').DataTable();
+			CKEDITOR.replace( 'ckeditor1', {
+				filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+				filebrowserUploadMethod: 'form'
+			});
+			
+			CKEDITOR.replace( 'ckeditor2', {
+				filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
+				filebrowserUploadMethod: 'form'
+			});
 		});
-		
-		CKEDITOR.replace( 'ckeditor2', {
-			filebrowserUploadUrl: "{{route('upload', ['_token' => csrf_token() ])}}",
-			filebrowserUploadMethod: 'form'
-		});
-	});
-  </script>
+	  </script>
+  @endif
 </body>
 </html>

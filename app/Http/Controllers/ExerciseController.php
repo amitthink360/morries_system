@@ -208,4 +208,22 @@ class ExerciseController extends Controller
 			return Redirect::to('/');
 		}
 	}	
+	
+	public function startExercise(Request $request)
+    {		
+		if(Auth::check() && Auth::user()->role == "student") {
+			return View('pages.exercise.startexercise');
+		}else{
+			return Redirect::to('/');
+		}
+	}
+	
+	public function Progress(Request $request)
+    {		
+		if(Auth::check() && Auth::user()->role == "student") {
+			return View('pages.exercise.progress');
+		}else{
+			return Redirect::to('/');
+		}
+	}
 }	

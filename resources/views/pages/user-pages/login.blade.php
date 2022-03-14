@@ -30,7 +30,7 @@
             </div>
           </div>
           <div class="form-group">
-            <a class="btn btn-primary submit-btn btn-block" onclick="login();">Login</a>
+            <button type="button" class="btn btn-primary submit-btn btn-block" onclick="login();">Login</button>
           </div>
           <div class="form-group d-flex justify-content-between">
             <div class="form-check form-check-flat mt-0">
