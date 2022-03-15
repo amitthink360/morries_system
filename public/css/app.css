@@ -16296,7 +16296,7 @@ small {
   text-transform: capitalize;
   font-family: "Roboto", sans-serif;
   font-size: 26px;
-  width: 68%;
+  width: 40%;
   float: left;
 }
 
@@ -19615,8 +19615,9 @@ small {
 }
 
 .score{
-	float: left;
+	margin-left:10%;
 	font-size: 22px;
+	font-weight: 500;
 }
 
 #fixture{
@@ -19735,4 +19736,9 @@ small {
 .stars-98:after { width: 98%; }
 .stars-99:after { width: 99%; }
 .stars-100:after { width: 100%; }
+
+.exercise_test .form-control{
+	font-size:16px;
+}
+
 /*# sourceMappingURL=app.css.map*/

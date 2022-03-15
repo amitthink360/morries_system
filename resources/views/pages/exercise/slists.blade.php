@@ -66,12 +66,7 @@
 						
 						<div class="form-group" id="mins_field" style="display:none;">
 							<div class="input-group">
-								<select class="form-control" name="exercise_time">
-									<option value="">Select Minutes</option>
-									@for ($i = 10; $i <= 60; $i+=10)
-										<option value="{{ $i }}">{{ $i }}</option>
-									@endfor	
-								</select>			
+								<input type="number" name="exercise_time" class="form-control" placeholder="Set time in minutes...">
 							</div>
 						</div>
 						
@@ -108,13 +103,13 @@
 			headers: {
 			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
-			url: "{{ url('/exercise/add') }}",
+			url: "{{ url('/exercise/start') }}",
 			type: 'POST',
 			data: formdata,
 			success: function(result) {
 										
 				if(result.success === 'true'){
-					location.reload();
+					location.href="{{ url('/exercise/startexercise') }}/"+result.uid;
 				}else{
 					$("#wait-main").css("display", "none");
 					

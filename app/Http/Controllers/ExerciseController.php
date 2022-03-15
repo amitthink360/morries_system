@@ -3,10 +3,13 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
+use Webpatser\Uuid\Uuid;
 use App\User;
 use App\Exercise;
 use App\Questions;
 use App\Types;
+use App\StudentExercise;
 use DB;
 use Response;
 use DateTime;
@@ -209,10 +212,41 @@ class ExerciseController extends Controller
 		}
 	}	
 	
-	public function startExercise(Request $request)
+	public function addTest(Request $request)
+	{
+		try {
+			
+			$uid = Uuid::generate()->string;
+			
+			$exercise = new StudentExercise;
+			$exercise->uid = $uid;
+			$exercise->user_id = Auth::user()->id;
+			$exercise->exercise_id = $request->input('exercise_id');
+			$exercise->timing = $request->input('timing');
+			$exercise->exercise_time = $request->input('exercise_time');
+			$exercise->scored = $request->input('scored');
+			$exercise->created_at = Carbon::now();
+			$exercise->save();		
+				
+			return Response::json(array(
+				'success'   =>  'true',
+				'uid'   =>  $uid,
+			), 200);
+			
+		} catch (ModelNotFoundException $exception) {
+			return Response::json(array(
+				'error'   =>  $exception->getMessage()
+			), 200);
+		}
+	}
+	
+	public function startExercise(Request $request,$uuid)
     {		
 		if(Auth::check() && Auth::user()->role == "student") {
-			return View('pages.exercise.startexercise');
+			$testinfo = StudentExercise::where("uid",$uuid)->first();
+			$questions = Questions::where("exercise_id",$testinfo->exercise_id)->get();
+			
+			return View('pages.exercise.startexercise', compact('testinfo','questions'));
 		}else{
 			return Redirect::to('/');
 		}

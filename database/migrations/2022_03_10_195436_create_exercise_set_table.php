@@ -13,11 +13,13 @@ class CreateExerciseSetTable extends Migration
      */
     public function up()
     {
-        Schema::create('exercise_set', function (Blueprint $table) {
-            $table->increments('id'); 
-			$table->string('name');
-            $table->timestamps();
-        });
+		if ( !Schema::hasTable('exercise_set') ) {
+			Schema::create('exercise_set', function (Blueprint $table) {
+				$table->increments('id'); 
+				$table->string('name');
+				$table->timestamps();
+			});
+		}
     }
 
     /**
