@@ -50,14 +50,13 @@
 	</div>
 	<script>
 	$(function() {
-	  function addScore(score, $domElement) {
-		$("<span class='stars-container'>")
-		  .addClass("stars-" + score.toString())
-		  .text("★★★★★")
-		  .appendTo($domElement);
-	  }
-
-	  addScore(0, $("#fixture"));
+		function addScore(score, $domElement) {
+			$("<span class='stars-container'>")
+			.addClass("stars-" + score.toString())
+			.text("★★★★★")
+			.appendTo($domElement);
+		}
+		addScore(0, $("#fixture"));
 	});
 	
 	@if($testinfo->timing == "yes")
