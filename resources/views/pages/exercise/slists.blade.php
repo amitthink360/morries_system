@@ -66,7 +66,7 @@
 						
 						<div class="form-group" id="mins_field" style="display:none;">
 							<div class="input-group">
-								<input type="number" name="exercise_time" class="form-control" placeholder="Set time in minutes...">
+								<input type="number" name="exercise_time" class="form-control" value placeholder="Set time in minutes...">
 							</div>
 						</div>
 						
@@ -95,10 +95,19 @@
 </div>
 <script>
 	function startExercise() {
-		$("#wait-main").css("display", "block");
-		
 		formdata = $("#start_exercise_form").serialize();
 		
+		timing = $('input[name="timing"]:checked').val();
+		if(timing == 'yes'){
+			timevalue = $('input[name="exercise_time"]').val();
+			
+			if(timevalue == ""){
+				alert("Please enter the time.");
+				return false;
+			}
+		}
+		
+		$("#wait-main").css("display", "block");
 		$.ajax({
 			headers: {
 			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
