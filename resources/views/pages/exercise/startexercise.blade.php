@@ -10,40 +10,50 @@
 		<div class="card">
 		  <div class="card-body">
 			<h4 class="card-title">Exercise Test</h4>@if($testinfo->timing == "yes")<div class="countdown_tiles" style="display:inline-block;"></div>@endif<span class="score" @if($testinfo->scored == "no") style="float:right;" @endif>Score: <b>0</b></span>@if($testinfo->scored == "yes")<div id="fixture"></div>@endif
-			<div class="table-responsive">
-				<div class="col-lg-12 grid-margin stretch-card">
-					<div class="col-lg-6 grid-margin">
-						<div class="form-group">
-							<div class="input-group">	
-								<textarea class="form-control" rows="15" readonly placeholder="Question..."></textarea>
+			<form action="#" method="post" id="question_form" enctype="multipart/form-data">
+				{!! csrf_field() !!}
+				<div class="table-responsive exercise_test">
+					<div class="col-lg-12 grid-margin stretch-card">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<div class="input-group">	
+									<div class="form-control exercise_question"> @if($question->type_id == 2) <em>Please reorder the sentence correctly</em> <br>@endif Question: {{ $question->question }}</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group">
+								<div class="input-group">	
+									<img src="{{ asset('assets/images/dummy.gif') }}" width="550" height="270">
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-6 grid-margin">
-						<div class="form-group">
-							<div class="input-group">	
-								<img src="{{ asset('assets/images/dummy.gif') }}" width="550" height="270">
+					<div class="col-lg-12 grid-margin stretch-card">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<div class="input-group">	
+									<textarea class="form-control" rows="15" name="student_anwser" placeholder="Answer here..."></textarea>
+								</div>
 							</div>
 						</div>
+						<div class="col-lg-6">
+							<div class="form-group">
+								<div class="input-group">	
+									<div class="form-control exercise_question" id="anwser_result"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<input name="exercise_id" type="hidden" value="{{ $question->exercise_id }}" />
+					<input name="question_id" type="hidden" value="{{ $question->id }}" />
+					<div class="col-lg-12 exercise_test_button">
+						<a href="javascript:void(0);" name="next" onclick="nextQuestion();" class="btn btn-primary btn-fw">Next</a>
+						<a href="javascript:void(0);" name="skip" onclick="skipQuestion();" class="btn btn-info btn-fw">Skip</a>
+						<a href="javascript:void(0);" name="exit" onclick="exitExercise();" class="btn btn-danger btn-fw">Exit</a>
 					</div>
 				</div>
-				<div class="col-lg-12 grid-margin stretch-card">
-					<div class="col-lg-6 grid-margin">
-						<div class="form-group">
-							<div class="input-group">	
-								<textarea class="form-control" rows="15" placeholder="Answer here..."></textarea>
-							</div>
-						</div>
-					</div>
-					<div class="col-lg-6 grid-margin">
-						<div class="form-group">
-							<div class="input-group">	
-								<textarea class="form-control" rows="15" readonly placeholder="Result..."></textarea>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+			</form>
 		  </div>
 		</div>
 	  </div>
@@ -58,6 +68,30 @@
 		}
 		addScore(0, $("#fixture"));
 	});
+	
+	function nextQuestion() {
+		$("#wait-main").css("display", "block");
+		
+		formdata = $("#question_form").serialize();
+		
+		$.ajax({
+			headers: {
+			  'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+			},
+			url: "{{ url('/question/check') }}",
+			type: 'POST',
+			data: formdata,
+			success: function(result) {
+					console.log(result);					
+				if(result.success === 'true'){
+					//location.reload();
+				}else{
+					$("#wait-main").css("display", "none");
+					$("#anwser_result").html(result.msg);
+				}
+			}
+		});
+	}
 	
 	@if($testinfo->timing == "yes")
 

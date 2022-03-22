@@ -244,13 +244,53 @@ class ExerciseController extends Controller
     {		
 		if(Auth::check() && Auth::user()->role == "student") {
 			$testinfo = StudentExercise::where("uid",$uuid)->first();
-			$questions = Questions::where("exercise_id",$testinfo->exercise_id)->get();
+			$question = Questions::where("exercise_id",$testinfo->exercise_id)->first();
 			
-			return View('pages.exercise.startexercise', compact('testinfo','questions'));
+			return View('pages.exercise.startexercise', compact('testinfo','question'));
 		}else{
 			return Redirect::to('/');
 		}
 	}
+	
+	public function checkQuestionAnswer(Request $request)
+    {
+		$exercise_id = $request->input('exercise_id');
+		$question_id = $request->input('question_id');
+		$answer = $request->input('student_anwser');
+		
+		$question = Questions::where('id', $question_id)->where('exercise_id', $exercise_id)->first();
+		
+		if($this->removeSpecial($question->answer) == $this->removeSpecial($answer)){
+			$nextQuestion = Questions::where('id', '>', $question_id)->first();
+			return Response::json(array(
+				'success'   =>  'true',
+				'nextquestion'   =>  $nextQuestion
+			), 200);
+		}else{
+			$j = mb_strlen($answer);
+			$answer_hint = array();
+			for ($k = 0; $k < $j; $k++) 
+			{
+				$char = mb_substr($answer, $k, 1);
+				$jq = mb_strlen($question->answer);
+				for ($kq = 0; $kq < $jq; $kq++) 
+				{
+					$qchar = mb_substr($question->answer, $kq, 1);
+					if($this->removeSpecial($qchar) == $this->removeSpecial($char)){
+						$answer_hint[] = "<span style='color:green;'>".$char."</span>";
+					}else{
+						$answer_hint[] = "<span style='color:red;'>".$char."</span>";
+					}
+				}	
+			}
+			
+			return Response::json(array(
+				'error'   =>  'true',
+				'msg'   =>  $answer_hint
+			), 200);
+			//echo"<pre/>";print_r($var_arr); die;
+		}
+    }
 	
 	public function Progress(Request $request)
     {		
@@ -259,5 +299,15 @@ class ExerciseController extends Controller
 		}else{
 			return Redirect::to('/');
 		}
+	}
+	
+	public function removeSpecial($string){
+		$string = str_replace(array('[\', \']'), '', $string);
+		$string = preg_replace('/\[.*\]/U', '', $string);
+		$string = preg_replace('/&(amp;)?#?[a-z0-9]+;/i', '-', $string);
+		$string = htmlentities($string, ENT_COMPAT, 'utf-8');
+		$string = preg_replace('/&([a-z])(acute|uml|circ|grave|ring|cedil|slash|tilde|caron|lig|quot|rsquo);/i', '\\1', $string );
+		$string = preg_replace(array('/[^a-z0-9]/i', '/[-]+/') , '', $string);
+		return strtolower(trim($string, ''));
 	}
 }	
