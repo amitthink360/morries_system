@@ -17,7 +17,7 @@
 						<div class="col-lg-6">
 							<div class="form-group">
 								<div class="input-group">	
-									<div class="form-control exercise_question"> @if($question->type_id == 2) <em>Please reorder the sentence correctly</em> <br>@endif Question: {{ $question->question }}</div>
+									<div class="form-control exercise_question" id="question_div"> @if($question->type_id == 2) <em>Please reorder the sentence correctly</em> <br>@endif Question: {{ $question->question }}</div>
 								</div>
 							</div>
 						</div>
@@ -33,7 +33,7 @@
 						<div class="col-lg-6">
 							<div class="form-group">
 								<div class="input-group">	
-									<textarea class="form-control" rows="15" name="student_anwser" placeholder="Answer here..."></textarea>
+									<textarea class="form-control" rows="15" name="student_anwser" id="student_anwser" placeholder="Answer here..."></textarea>
 								</div>
 							</div>
 						</div>
@@ -82,9 +82,14 @@
 			type: 'POST',
 			data: formdata,
 			success: function(result) {
-					console.log(result);					
+				//console.log(result);					
 				if(result.success === 'true'){
-					//location.reload();
+					$("#wait-main").css("display", "none");
+					$("#anwser_result").html(" ");
+					$("#student_anwser").val("");
+					$("input[name=exercise_id]").val(result.nextquestion.exercise_id);
+					$("input[name=question_id]").val(result.nextquestion.id);
+					$("#question_div").html(result.nextquestion.question);
 				}else{
 					$("#wait-main").css("display", "none");
 					$("#anwser_result").html(result.msg);

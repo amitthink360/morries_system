@@ -267,26 +267,48 @@ class ExerciseController extends Controller
 				'nextquestion'   =>  $nextQuestion
 			), 200);
 		}else{
-			$j = mb_strlen($answer);
+			$aa = 0;
 			$answer_hint = array();
-			for ($k = 0; $k < $j; $k++) 
-			{
-				$char = mb_substr($answer, $k, 1);
-				$jq = mb_strlen($question->answer);
-				for ($kq = 0; $kq < $jq; $kq++) 
-				{
-					$qchar = mb_substr($question->answer, $kq, 1);
-					if($this->removeSpecial($qchar) == $this->removeSpecial($char)){
-						$answer_hint[] = "<span style='color:green;'>".$char."</span>";
+			$uquestions = explode(" ",$answer);
+			foreach(explode(" ",$question->answer) as $useranwser){
+				
+				$qqqq = mb_strlen($useranwser);
+				$uanswers = $uquestions[$aa];
+				//echo"<pre/>";print_r($useranwser);
+				for ($k = 0; $k < $qqqq; $k++) 
+				{					
+					$char = mb_substr($useranwser, $k, 1);
+					$qchar = mb_substr($uanswers, $k, 1);
+					
+					if(strlen($useranwser) > strlen($uanswers)){
+						if($char !== $qchar){
+							$answer_hint[] = "<span style='color:green;'>".substr_replace( $uanswers, "<span style='color:red;'>_</span>", $k, 0 )."</span>";
+							break;
+						}
+					}elseif(strlen($useranwser) < strlen($uanswers)){
+						if($useranwser !== $uanswers){
+							$answer_hint[] = "<span style='color:red;'>".substr_replace( $uanswers, $qchar, $k, 1 )."</span>";
+							break;
+						}
+					}elseif($this->removeSpecial($uanswers) !== $this->removeSpecial($useranwser)){
+						$answer_hint[] = "<span style='color:red;'>".substr_replace( $uanswers, $qchar, $k, 1 )."</span>";
+						break;
+					}elseif($this->removeSpecial($qchar) == $this->removeSpecial($char)){
+						$answer_hint[] = "<span style='color:green;'>".substr_replace( $uanswers, $qchar, $k, 1 )."</span>";
+						break;
 					}else{
-						$answer_hint[] = "<span style='color:red;'>".$char."</span>";
+						$answer_hint[] = "<span style='color:red;'>".substr_replace( $uanswers, $qchar, $k, 1 )."</span>";
+						break;
 					}
-				}	
+				}
+				
+				$aa++;
 			}
 			
 			return Response::json(array(
 				'error'   =>  'true',
-				'msg'   =>  $answer_hint
+				'msg'   =>  implode(" ",$answer_hint),
+				'ss'   =>  $uanswers
 			), 200);
 			//echo"<pre/>";print_r($var_arr); die;
 		}
